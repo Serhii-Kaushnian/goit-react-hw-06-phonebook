@@ -2,7 +2,8 @@ import { Form, Label, Input, ClearButton } from './Filter.styled';
 import PropTypes from 'prop-types';
 import { FaTrashAlt } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
-import { clearFilter } from '../../redux/actions.js';
+import { clearFilter } from '../../redux/slice';
+
 export default function Filter({ filterChange, filterValue }) {
   const dispatch = useDispatch();
   const handleClearFilter = () => {
