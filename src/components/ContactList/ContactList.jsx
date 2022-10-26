@@ -7,22 +7,42 @@ import {
   Button,
   ItemContainerSpan,
 } from './ContactList.styled';
-import PropTypes from 'prop-types';
-import { FaRegSadCry } from 'react-icons/fa';
 
-export default function ContactList({ title, contactsList, onContactDelete }) {
+import { FaRegSadCry } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteContacts } from '../../redux/slice';
+
+export default function ContactList() {
+  const dispatch = useDispatch();
+
+  const contactslist = useSelector(state => state.contactslist);
+
+  const getFilteredContacts = () => {
+    if (contactslist.contacts) {
+      return contactslist.contacts.filter(contact => {
+        return contact.name.toLowerCase().includes(contactslist.filter);
+      });
+    }
+  };
+
+  const filteredContacts = getFilteredContacts();
+
+  const deleteContact = e => {
+    const id = e.currentTarget.id;
+    dispatch(deleteContacts(id));
+  };
   return (
     <ContactsListWrapper>
-      <Title>{title}</Title>
-      {contactsList.length !== 0 ? (
+      <Title>Contacts</Title>
+      {filteredContacts.length !== 0 ? (
         <List>
-          {contactsList.map(value => {
+          {filteredContacts.map(value => {
             return (
               <Item key={value.id}>
                 <ItemContainer>
                   {value.name} :
                   <ItemContainerSpan>{value.number}</ItemContainerSpan>
-                  <Button onClick={onContactDelete} id={value.id} type="button">
+                  <Button onClick={deleteContact} id={value.id} type="button">
                     Delete contact
                   </Button>
                 </ItemContainer>
@@ -41,14 +61,3 @@ export default function ContactList({ title, contactsList, onContactDelete }) {
   );
 }
 
-ContactList.propTypes = {
-  title: PropTypes.string.isRequired,
-  allContacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      id: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ),
-  onContactDelete: PropTypes.func.isRequired,
-};

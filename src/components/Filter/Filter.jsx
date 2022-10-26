@@ -1,25 +1,30 @@
 import { Form, Label, Input, ClearButton } from './Filter.styled';
-import PropTypes from 'prop-types';
-import { FaTrashAlt } from 'react-icons/fa';
-import { useDispatch } from 'react-redux';
-import { clearFilter } from '../../redux/slice';
 
-export default function Filter({ filterChange, filterValue }) {
+import { FaTrashAlt } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearFilter } from '../../redux/slice';
+import { filterContacts } from '../../redux/slice';
+
+export default function Filter() {
+  const contactslist = useSelector(state => state.contactslist);
+
   const dispatch = useDispatch();
   const handleClearFilter = () => {
     dispatch(clearFilter());
   };
-
+  const handleFilter = e => {
+    dispatch(filterContacts(e.currentTarget.value));
+  };
   return (
     <div>
       <Form>
         <Label>
           Find contact by name
           <Input
-            onChange={filterChange}
+            onChange={handleFilter}
             type="text"
             name="filter"
-            value={filterValue}
+            value={contactslist.filter}
           />
         </Label>
         <ClearButton onClick={handleClearFilter} type="button">
@@ -29,8 +34,3 @@ export default function Filter({ filterChange, filterValue }) {
     </div>
   );
 }
-
-Filter.propTypes = {
-  filterValue: PropTypes.string.isRequired,
-  filterChange: PropTypes.func.isRequired,
-};

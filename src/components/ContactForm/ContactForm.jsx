@@ -1,6 +1,9 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 import shortid from 'shortid';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { addContact } from '../../redux/slice';
+
 import {
   ContactsWrapper,
   Title,
@@ -10,10 +13,28 @@ import {
   Button,
 } from './ContactForm.styled';
 
-export default function ContactForm({ title, onFormSubmit }) {
+export default function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  //=====================================
+  const contactslist = useSelector(state => state.contactslist);
 
+  const dispatch = useDispatch();
+  const isContactlreadyExist = ({ name }) => {
+    const result = contactslist.contacts.find(
+      contact => contact.name.toLowerCase() === name.toLowerCase()
+    );
+    return !result;
+  };
+
+  const contactFormHadler = data => {
+    if (isContactlreadyExist(data)) {
+      dispatch(addContact(data));
+    } else {
+      Notify.info(`Contact ${data.name} is already in Your Phonebook`);
+    }
+  };
+  //=====================================
   const onContactFormInputChange = e => {
     const { name, value } = e.currentTarget;
     switch (name) {
@@ -28,10 +49,10 @@ export default function ContactForm({ title, onFormSubmit }) {
         break;
     }
   };
-  const addContact = e => {
+  const addContactToList = e => {
     e.preventDefault();
     const id = shortid.generate();
-    onFormSubmit({ name, number, id });
+    contactFormHadler({ name, number, id });
     formReset();
   };
   const formReset = () => {
@@ -41,8 +62,8 @@ export default function ContactForm({ title, onFormSubmit }) {
 
   return (
     <ContactsWrapper>
-      <Title>{title}</Title>
-      <Form onSubmit={addContact}>
+      <Title>Phonebook</Title>
+      <Form onSubmit={addContactToList}>
         <Label>
           Name
           <Input
@@ -72,8 +93,3 @@ export default function ContactForm({ title, onFormSubmit }) {
     </ContactsWrapper>
   );
 }
-
-ContactForm.propTypes = {
-  title: PropTypes.string.isRequired,
-  onFormSubmit: PropTypes.func.isRequired,
-};
