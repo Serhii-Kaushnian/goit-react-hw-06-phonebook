@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import shortid from 'shortid';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-import { addContact } from '../../redux/slice';
+import { addContact } from 'redux/slice';
 
 import {
   ContactsWrapper,

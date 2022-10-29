@@ -10,7 +10,7 @@ import {
 
 import { FaRegSadCry } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteContacts } from '../../redux/slice';
+import { deleteContacts } from 'redux/slice';
 
 export default function ContactList() {
   const dispatch = useDispatch();
@@ -60,4 +60,3 @@ export default function ContactList() {
     </ContactsListWrapper>
   );
 }
-

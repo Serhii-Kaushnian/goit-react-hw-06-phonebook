@@ -2,8 +2,7 @@ import { Form, Label, Input, ClearButton } from './Filter.styled';
 
 import { FaTrashAlt } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearFilter } from '../../redux/slice';
-import { filterContacts } from '../../redux/slice';
+import { filterContacts, clearFilter } from 'redux/slice';
 
 export default function Filter() {
   const contactslist = useSelector(state => state.contactslist);
