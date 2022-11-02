@@ -1,5 +1,4 @@
 import { Form, Label, Input, ClearButton } from './Filter.styled';
-
 import { FaTrashAlt } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { filterContacts, clearFilter } from 'redux/slice';
